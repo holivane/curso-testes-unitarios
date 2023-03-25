@@ -36,12 +36,40 @@ describe('POST em /editoras', () => {
         cidade: 'Sao Paulo',
         email: 's@s.com'
       })
-
       .expect(201)
 
       idRespostaPost = resposta.body.content.id
     })
+
+    test('Não adiciona se o body estiver vazio', async () => {
+      await request(app)
+      .put(`/editoras/${idRespostaPost}`)
+      .send({nome: 'Casa do Codigo'})
+      .expect(204)
+    })
   })
+
+  describe('PUT em /editoras/id', () => {
+    test('Altera uma editora', async () => {
+      const resposta = await request(app)
+        .post('/editoras')
+        .send({
+          nome: 'CDC',
+          cidade: 'Sao Paulo',
+          email: 's@s.com'
+        })
+        .expect(201)
+
+        idRespostaPost = resposta.body.content.id
+      })
+
+      test('Não adiciona se o body estiver vazio', async () => {
+        await request(app)
+        .post('/editoras')
+        .send({})
+        .expect(400)
+      })
+    })
 
   describe('DELETE em /editoras', () => {
     test('Deleta o recurso adicionado', async () => {
